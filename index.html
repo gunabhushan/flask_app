@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="#" method="post">
+        <label for="ename">Employee Name</label>
+        <input id="ename" name="ename" type="text"><br>
+        <label for="esalary">Employee Salary</label>
+        <input id="esalary" name="esalary" type="number"><br>
+        <label for="email">Employee Email</label>
+        <input id="email" name="email" type="email"><br>
+        <button id="submit" name="submit" type="button">submit</button>
+    </form>
+    <br>
+    <label for="mail"></label>
+    <input id="mail" name="mail" type="email"><br>
+    <button id="getEmpData" name="getEmpData" type="button">submit</button>
+    <div id="getData" name="getData">
+    </div>
+
+    <script>
+        
+        async function dataPoster(){
+            var name = document.getElementById('ename').value
+            var salary = document.getElementById('esalary').value
+            var mail = document.getElementById('email').value
+            const newProduct = {
+                ename: name,
+                esalary: salary,
+                email: mail
+            }
+            // console.log(JSON.stringify(newProduct))
+            // a POST request
+            const response = await fetch('http://127.0.0.1:5000', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                },
+                body: JSON.stringify(newProduct),
+            })
+            // console.log('status:', response.status)
+        }        
+        document.getElementById('submit').addEventListener('click',dataPoster)
+
+        async function dataGeter(){
+            document.getElementById('getData').innerHTML = ''
+            empMail = document.getElementById('mail').value;
+            var url = 'http://127.0.0.1:5000' + '?empEmail=' + empMail;
+            const response = await fetch(url);
+            const names = await response.json();
+            var xyz = 'Employee Id is : '+ names.eid+ '<br>' + 'Employee Name is : '+ names.ename + "<br>" + 'Employee Salary is : '+names.esalary;            
+            
+            document.getElementById('getData').innerHTML = xyz
+            
+            }
+        document.getElementById('getEmpData').addEventListener('click',dataGeter)
+    </script>
+</body>
+</html>
